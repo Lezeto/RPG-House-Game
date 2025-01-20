@@ -16,76 +16,126 @@ import legsImg from "./legs.png";
 import potionImg from "./potion.png";
 import coinImg from "./coin.png"; // Import the gold coin image
 
+import "./InventoryGame.css"; // Import the external CSS
+
 const itemImages = {
-  pollo: polloImg,
-  varita: varitaImg,
-  espada: espadaImg,
-  pico: picoImg,
-  anillo: anilloImg,
-  libro: libroImg,
-  gema: gemaImg,
-  capa: capaImg,
-  sombrero: sombreroImg,
-  casco: cascoImg,
-  armor: armorImg,
-  legs: legsImg,
-  potion: potionImg,
+  Chicken: polloImg,
+  Wand: varitaImg,
+  Sword: espadaImg,
+  Pickaxe: picoImg,
+  Ring: anilloImg,
+  Book: libroImg,
+  Gem: gemaImg,
+  Cloak: capaImg,
+  Hat: sombreroImg,
+  Helmet: cascoImg,
+  Armor: armorImg,
+  LegArmor: legsImg,
+  Potion: potionImg,
 };
 
-const Inventory = ({ balance }) => {
+const Inventory = ({ balance, setBalance }) => {
   const [inventory, setInventory] = useState([
-    "pollo", "varita", "espada", "pico", "anillo",
-    "libro", "gema", "capa", "sombrero", "casco",
-    "armor", "legs", "potion", "potion", // Two potions at the end
-    "", "", "", "", "", "", "", "", "","" // Empty spaces
+    "Chicken", "Wand", "Sword", "Pickaxe", "Ring",
+    "Book", "Gem", "Cloak", "Hat", "Helmet",
+    "Armor", "LegArmor", "Potion", "Potion", 
+    "", "", "", "", "", "", "", "", ""
   ]);
+  const [draggingItem, setDraggingItem] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [menuVisible, setMenuVisible] = useState(null); // New state to track which menu is open
 
   const handleDragStart = (event, index) => {
-    event.dataTransfer.setData("draggedItemIndex", index); // Store the index of the dragged item
+    setDraggingItem(index);
+    event.dataTransfer.setData("draggedItemIndex", index);
   };
 
   const handleDrop = (event, index) => {
     const draggedItemIndex = event.dataTransfer.getData("draggedItemIndex");
     const newInventory = [...inventory];
 
-    // Swap items
     const temp = newInventory[index];
     newInventory[index] = newInventory[draggedItemIndex];
     newInventory[draggedItemIndex] = temp;
 
-    setInventory(newInventory); // Update state with swapped items
+    setInventory(newInventory);
+    setDraggingItem(null);
   };
 
   const handleDragOver = (event) => {
-    event.preventDefault(); // Necessary to allow a drop to happen
+    event.preventDefault();
+  };
+
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value.toLowerCase());
+  };
+
+  const filteredInventory = inventory.filter(item => 
+    item.toLowerCase().includes(searchQuery)
+  );
+
+  const handleItemClick = (index) => {
+    setMenuVisible(menuVisible === index ? null : index); // Toggle menu visibility for the clicked item
+  };
+
+  const sellItem = (index) => {
+    // Remove the item from the inventory
+    const newInventory = [...inventory];
+    newInventory.splice(index, 1, ""); // Replace the item with an empty slot
+
+    // Update the inventory state
+    setInventory(newInventory);
+
+    // Add 10 gold coins to the balance
+    setBalance(prevBalance => prevBalance + 10);
   };
 
   return (
-    <div style={styles.inventoryContainer}>
-      {/* Display the bank balance with the larger coin image */}
-      <div style={styles.balance}>
+    <div className="inventory-container">
+      <div className="balance">
         <span>Balance: {balance} </span>
-        <img src={coinImg} alt="Gold Coins" style={styles.coinIcon} />
+        <img src={coinImg} alt="Gold Coins" className="coin-icon" />
       </div>
 
-      <div style={styles.inventory}>
-        {inventory.map((item, index) => (
+      <input
+        type="text"
+        placeholder="Search items"
+        className="search-bar"
+        value={searchQuery}
+        onChange={handleSearch}
+      />
+
+      <div className="inventory">
+        {filteredInventory.map((item, index) => (
           <div
-            style={styles.inventorySlot}
+            className={`inventory-slot ${draggingItem === index ? 'dragging' : ''}`}
             key={index}
             onDragOver={handleDragOver}
             onDrop={(event) => handleDrop(event, index)}
           >
             {item ? (
-              <img
-                src={itemImages[item]}
-                alt={item}
-                style={styles.inventoryItem}
-                draggable
-                onDragStart={(event) => handleDragStart(event, index)}
-              />
+              <>
+                <img
+                  src={itemImages[item]}
+                  alt={item}
+                  className="inventory-item"
+                  draggable
+                  onDragStart={(event) => handleDragStart(event, index)}
+                  onClick={() => handleItemClick(index)} // Handle item click
+                />
+                <div className="item-tooltip">{item}</div>
+
+                {/* Menu for each item */}
+                {menuVisible === index && (
+                  <div className="item-menu">
+                    <button onClick={() => sellItem(index)}>Sell for 10 Gold</button>
+                    <button>Option 2</button>
+                    <button>Option 3</button>
+                  </div>
+                )}
+              </>
             ) : (
-              <div style={styles.emptySlot}></div> // Blank space for empty slots
+              <div className="empty-slot"></div>
             )}
           </div>
         ))}
@@ -95,77 +145,13 @@ const Inventory = ({ balance }) => {
 };
 
 const InventoryGame = () => {
-  const [balance, setBalance] = useState(5); // Initial balance
+  const [balance, setBalance] = useState(5); // Initial balance set to 5 gold
 
   return (
-    <div style={styles.app}>
-      <Inventory balance={balance} />
+    <div className="app">
+      <Inventory balance={balance} setBalance={setBalance} />
     </div>
   );
-};
-
-const styles = {
-  app: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh",
-    backgroundColor: "#f0f0f0",
-    flexDirection: "column", // Stack the balance and inventory
-    padding: "0 10px", // Prevent overflow due to margin
-    boxSizing: "border-box",
-    overflow: "hidden", // Prevent vertical scrollbar
-  },
-  inventoryContainer: {
-    width: "100%", // Make sure the balance takes the full width
-    maxWidth: "900px", // Optional: Set a max width for layout
-    padding: "10px",
-    overflow: "hidden", // Remove vertical and horizontal scrollbar
-  },
-  balance: {
-    display: "flex",
-    alignItems: "center",
-    fontSize: "30px", // Increase font size for balance text
-    fontWeight: "bold",
-    marginBottom: "20px", // Space between balance and inventory
-    justifyContent: "center", // Center the balance across the screen
-  },
-  coinIcon: {
-    width: "45px", // Increase the coin icon size
-    height: "45px",
-    marginLeft: "10px", // Add space between balance text and coin
-  },
-  inventory: {
-    display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)", // 4 columns in the grid
-    gridTemplateRows: "repeat(8, 1fr)",  // 8 rows in the grid
-    gridGap: "10px",
-    background: "#ddd",
-    padding: "10px 20px 20px 10px",
-    borderRadius: "8px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-    maxHeight: "calc(100vh - 120px)", // Adjust height for grid content to avoid overflow
-    overflow: "hidden", // Remove scrollbars for the grid
-  },
-  inventorySlot: {
-    width: "100%",
-    aspectRatio: "1 / 1", // Keep square aspect ratio
-    background: "#fff",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-  },
-  inventoryItem: {
-    maxWidth: "80%", // Make sure images fit within the slot
-    maxHeight: "80%",
-  },
-  emptySlot: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#f0f0f0", // Blank space styling
-  },
 };
 
 export default InventoryGame;

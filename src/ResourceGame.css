@@ -1,0 +1,162 @@
+/* Apply box-sizing globally */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Container setup */
+.resource-game-container {
+  min-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh; /* Use full height of the viewport */
+  background-color: #f4f4f9;
+  font-family: 'Roboto', sans-serif;
+  padding: 20px;
+  overflow: hidden; /* Prevent overflow */
+}
+
+/* Resource section */
+.resource-section {
+  width: 90%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px; /* Can adjust as needed */
+  flex-grow: 1; /* Allow resource section to grow */
+  overflow-y: auto; /* Prevent content overflow */
+}
+
+/* Title styling */
+.resource-section h1 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.save-load-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.save-button, .load-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.save-button:hover, .load-button:hover {
+  background-color: #45a049;
+}
+
+
+/* Resource items */
+.resource-item {
+  height: 70px;
+  max-width: 500px;
+  margin-bottom:   10px; /* Reduce margin to make items more compact */
+  display: flex;
+  align-items: center; /* Align items horizontally */
+  justify-content: space-between;
+  padding: 10px 15px; /* Adjust padding to reduce height */
+  background-color: #fafafa;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
+}
+
+/* Resource info container */
+.resource-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Icon styling */
+.resource-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px; /* Reduced space between icon and text */
+  border-radius: 50%;
+}
+
+/* Text for resource name and amount */
+.resource-text {
+  display: flex;
+  flex-direction: row; /* Align name and amount horizontally */
+  align-items: center;
+  gap: 5px; /* Space between name and amount */
+}
+
+/* Button styling */
+.increment-button {
+  padding: 5px 5px; /* Adjust padding for compactness */
+  max-width: 45%; 
+  height: 50px;
+  font-size: 14px; /* Smaller font size to fit better */
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.increment-button:hover {
+  background-color: #45a049;
+}
+
+/* House section styling */
+.house-section {
+  width: 90%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto; /* Push house section to the bottom */
+}
+
+/* House section text */
+.house-section h3 {
+  font-size: 22px;
+  color: #333;
+}
+
+.house-section p {
+  font-size: 18px;
+  color: #666;
+}
+
+/* Level up button styling */
+.level-up-button {
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #FF5722;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.level-up-button:hover {
+  background-color: #e64a19;
+}
+
+/* House icon styling */
+.house-icon {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}

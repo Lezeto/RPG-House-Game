@@ -4,6 +4,7 @@ import ironIcon from './iron.png';
 import mudIcon from './mud.png';
 import woodIcon from './wood.png';
 import casaIcon from './casa.png';
+import './ResourceGame.css'; // Import the CSS file
 
 function ResourceGame() {
   const [resources, setResources] = useState({
@@ -98,41 +99,40 @@ function ResourceGame() {
   };
 
   const saveGame = () => {
-    const gameData = {
+    const gameState = {
       resources,
       increments,
       incrementCosts,
       houseLevel,
       resourceCost,
     };
-    localStorage.setItem('gameData', JSON.stringify(gameData));
+    localStorage.setItem('gameState', JSON.stringify(gameState));
     alert('Game saved!');
   };
 
   const loadGame = () => {
-    const savedData = localStorage.getItem('gameData');
-    if (savedData) {
-      const loadedData = JSON.parse(savedData);
-      setResources(loadedData.resources);
-      setIncrements(loadedData.increments);
-      setIncrementCosts(loadedData.incrementCosts);
-      setHouseLevel(loadedData.houseLevel);
-      setResourceCost(loadedData.resourceCost);
+    const savedState = JSON.parse(localStorage.getItem('gameState'));
+    if (savedState) {
+      setResources(savedState.resources);
+      setIncrements(savedState.increments);
+      setIncrementCosts(savedState.incrementCosts);
+      setHouseLevel(savedState.houseLevel);
+      setResourceCost(savedState.resourceCost);
       alert('Game loaded!');
     } else {
-      alert('No saved game found.');
+      alert('No saved game found!');
     }
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', backgroundColor: '#f4f4f9', fontFamily: "'Roboto', sans-serif", padding: '20px' }}>
+    <div className="resource-game-container">
       {/* Resources Section */}
-      <div style={{ width: '90%', backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', marginBottom: '20px' }}>
-        <h1 style={{ color: '#333', marginBottom: '20px', fontSize: '28px' }}>Resource Management</h1>
+      <div className="resource-section">
+        <h1>Resource Management</h1>
         <div>
           {Object.entries(resources).map(([resource, count]) => (
-            <div key={resource} style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', backgroundColor: '#fafafa', borderRadius: '10px', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)' }}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div key={resource} className="resource-item">
+              <div className="resource-info">
                 <img
                   src={
                     resource === 'food' ? foodIcon :
@@ -141,29 +141,16 @@ function ResourceGame() {
                     resource === 'wood' ? woodIcon : null
                   }
                   alt={resource}
-                  style={{ width: '40px', height: '40px', marginRight: '15px', borderRadius: '50%' }}
+                  className="resource-icon"
                 />
-                <div>
-                  <h3 style={{ fontSize: '20px', color: '#444' }}>{resource}</h3>
-                  <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#555' }}>{count.toFixed(2)}</p>
+                <div className="resource-text">
+                  <h3>{resource}</h3>
+                  <p>{count.toFixed(2)}</p>
                 </div>
               </div>
               <button
                 onClick={() => increaseIncrement(resource)}
-                style={{
-                  padding: '12px 25px',
-                  fontSize: '16px',
-                  borderRadius: '5px',
-                  backgroundColor: '#4CAF50',
-                  color: '#fff',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  marginTop: '10px',
-                  marginLeft: '20px',
-                }}
-                onMouseOver={(e) => e.target.style.backgroundColor = '#45a049'}
-                onMouseOut={(e) => e.target.style.backgroundColor = '#4CAF50'}
+                className="increment-button"
               >
                 Increase Increment by 20% (Cost: {incrementCosts[resource].toFixed(2)} of each)
               </button>
@@ -173,38 +160,25 @@ function ResourceGame() {
       </div>
 
       {/* House Section */}
-      <div style={{ width: '90%', backgroundColor: '#fff', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div className="house-section">
         <div>
-          <h3 style={{ fontSize: '22px', color: '#333' }}>House Level: {houseLevel}</h3>
-          <p style={{ fontSize: '18px', color: '#666' }}>Cost to Level Up: {resourceCost.toFixed(2)} of each resource</p>
-          <button
-            onClick={levelUpHouse}
-            style={{
-              padding: '12px 25px',
-              fontSize: '16px',
-              borderRadius: '5px',
-              backgroundColor: '#FF5722',
-              color: '#fff',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#e64a19'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#FF5722'}
-          >
+          <h3>House Level: {houseLevel}</h3>
+          <p>Cost to Level Up: {resourceCost.toFixed(2)} of each resource</p>
+          <button onClick={levelUpHouse} className="level-up-button">
             Level Up House
           </button>
         </div>
         <img
           src={casaIcon}
           alt="House"
-          style={{
-            width: '150px',
-            height: '150px',
-            borderRadius: '10px',
-            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-          }}
+          className="house-icon"
         />
+      </div>
+
+      {/* Save and Load Buttons */}
+      <div className="save-load-buttons">
+        <button onClick={saveGame} className="save-button">Save Game</button>
+        <button onClick={loadGame} className="load-button">Load Game</button>
       </div>
     </div>
   );

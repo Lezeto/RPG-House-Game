@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.character-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.svbutton {
+    background-color: #4CAF50;
+    margin: 0 10px 0 10px;
+    color: white;
+    min-width: 120px;
+    min-height: 40px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+}
+
+.character-header {
+    display: flex;
+    align-items: center;
+}
+
+.character-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0px 30px 0px 10px;
+}
+
+.health-bar, .xp-bar {
+    border: 1px solid #000;
+    width: 300px;
+    height: 20px;
+    margin: 10px auto;
+    position: relative;
+    background-color: #ddd;
+}
+
+.health-bar-fill {
+    height: 100%;
+    background-color: green;
+}
+
+.xp-bar-fill {
+    height: 100%;
+    background-color: blue;
+}
+
+.stat-bar {
+    border: 1px solid #000;
+    width: 200px;
+    height: 10px;
+    margin: 0px 10px 0 10px;
+    position: relative;
+    background-color: #ddd;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    background-color: purple;
+}
+
+.stats-section {
+    margin: 20px 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-row {
+    margin: 20px 0 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-label {
+    width: 100px;
+    text-align: center;
+    margin: 0 0 0 0;
+}
+
+.mission-button {
+    padding: 10px 20px;
+    background-color: #005a9e;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+    min-width: 170px;
+}
+
+.incremento-button {
+    margin: 0 10px 0 10px;
+    padding: 0 10px 0 10px;
+    border-radius: 5px;
+    background-color: #4CAF50;  
+    border: none;
+    color: white;
+    height: 35px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.mission-button:disabled {
+    cursor: not-allowed;
+}
+
+.mission-message {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
